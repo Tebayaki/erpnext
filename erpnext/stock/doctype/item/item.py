@@ -183,7 +183,7 @@ class Item(Document):
 			self.item_name = self.item_code
 
 		if not strip_html(cstr(self.description)).strip():
-			self.description = self.item_name
+			self.description = ""
 
 		self.validate_uom()
 		self.validate_description()
