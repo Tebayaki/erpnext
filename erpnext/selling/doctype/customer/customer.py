@@ -136,6 +136,8 @@ class Customer(TransactionBase):
 		self.update_lead_status()
 
 	def validate(self):
+		self.customer_name = frappe.utils.normalize_name(self.customer_name)
+
 		self.flags.is_new_doc = self.is_new()
 		self.flags.old_lead = self.lead_name
 		validate_party_accounts(self)

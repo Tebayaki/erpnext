@@ -181,6 +181,7 @@ class Item(Document):
 	def validate(self):
 		if not self.item_name:
 			self.item_name = self.item_code
+		self.item_name = frappe.utils.normalize_name(self.item_name)
 
 		if not strip_html(cstr(self.description)).strip():
 			self.description = ""

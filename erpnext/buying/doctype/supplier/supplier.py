@@ -128,6 +128,8 @@ class Supplier(TransactionBase):
 		frappe.msgprint(_("Added Supplier Role to User {0}.").format(frappe.bold(user_doc.name)), alert=True)
 
 	def validate(self):
+		self.supplier_name = frappe.utils.normalize_name(self.supplier_name)
+
 		self.flags.is_new_doc = self.is_new()
 
 		# validation for Naming Series mandatory field...
