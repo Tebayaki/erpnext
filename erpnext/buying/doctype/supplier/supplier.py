@@ -10,6 +10,7 @@ from frappe.contacts.address_and_contact import (
 	load_address_and_contact,
 )
 from frappe.model.naming import set_name_by_naming_series, set_name_from_naming_options
+from frappe.utils import normalize_text
 
 from erpnext.accounts.party import (
 	get_dashboard_info,
@@ -128,6 +129,7 @@ class Supplier(TransactionBase):
 		frappe.msgprint(_("Added Supplier Role to User {0}.").format(frappe.bold(user_doc.name)), alert=True)
 
 	def validate(self):
+		self.supplier_name = normalize_text(self.supplier_name)
 		self.flags.is_new_doc = self.is_new()
 
 		# validation for Naming Series mandatory field...

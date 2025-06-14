@@ -14,7 +14,7 @@ from frappe.contacts.address_and_contact import (
 from frappe.model.mapper import get_mapped_doc
 from frappe.model.naming import set_name_by_naming_series, set_name_from_naming_options
 from frappe.model.utils.rename_doc import update_linked_doctypes
-from frappe.utils import cint, cstr, flt, get_formatted_email, today
+from frappe.utils import cint, cstr, flt, get_formatted_email, today, normalize_text
 from frappe.utils.deprecations import deprecated
 from frappe.utils.user import get_users_with_role
 
@@ -136,6 +136,7 @@ class Customer(TransactionBase):
 		self.update_lead_status()
 
 	def validate(self):
+		self.customer_name = normalize_text(self.customer_name)
 		self.flags.is_new_doc = self.is_new()
 		self.flags.old_lead = self.lead_name
 		validate_party_accounts(self)

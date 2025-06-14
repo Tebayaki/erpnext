@@ -20,6 +20,7 @@ from frappe.utils import (
 	nowtime,
 	strip,
 	strip_html,
+	normalize_text,
 )
 from frappe.utils.html_utils import clean_html
 from pypika import Order
@@ -182,7 +183,9 @@ class Item(Document):
 
 	def validate(self):
 		if not self.item_name:
-			self.item_name = self.item_code
+			self.item_name = normalize_text(self.item_code)
+		else:
+			self.item_name = normalize_text(self.item_name)
 
 		if not strip_html(cstr(self.description)).strip():
 			self.description = self.item_name
