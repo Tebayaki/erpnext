@@ -307,6 +307,7 @@
    "oldfieldname": "import_amount",
    "oldfieldtype": "Currency",
    "options": "currency",
+   "precision": "2",
    "read_only": 1,
    "reqd": 1
   },
@@ -332,6 +333,7 @@
    "oldfieldname": "amount",
    "oldfieldtype": "Currency",
    "options": "Company:company:default_currency",
+   "precision": "2",
    "print_hide": 1,
    "read_only": 1,
    "reqd": 1
@@ -369,6 +371,7 @@
    "fieldtype": "Currency",
    "label": "Net Amount",
    "options": "currency",
+   "precision": "2",
    "print_hide": 1,
    "read_only": 1
   },
@@ -389,6 +392,7 @@
    "fieldtype": "Currency",
    "label": "Net Amount (Company Currency)",
    "options": "Company:company:default_currency",
+   "precision": "2",
    "print_hide": 1,
    "read_only": 1
   },
@@ -991,6 +995,7 @@
  "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

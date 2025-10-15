@@ -1077,6 +1077,7 @@
    "collapsible": 1,
    "fieldname": "section_break_49",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "hide_days": 1,
    "hide_seconds": 1,
    "label": "Additional Discount"

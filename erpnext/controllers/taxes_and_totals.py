@@ -25,6 +25,7 @@ from erpnext.utilities.regional import temporary_flag
 class calculate_taxes_and_totals:
 	def __init__(self, doc: Document):
 		self.doc = doc
+		self.rate_includes_tax = False
 		frappe.flags.round_off_applicable_accounts = []
 		frappe.flags.round_row_wise_tax = frappe.db.get_single_value(
 			"Accounts Settings", "round_row_wise_tax"
@@ -77,7 +78,8 @@ class calculate_taxes_and_totals:
 		self.validate_item_tax_template()
 		self.update_item_tax_map()
 		self.initialize_taxes()
-		self.determine_exclusive_rate()
+		if (self.rate_includes_tax):
+			self.determine_exclusive_rate()
 		self.calculate_net_total()
 		self.calculate_tax_withholding_net_total()
 		self.calculate_taxes()
@@ -243,6 +245,8 @@ class calculate_taxes_and_totals:
 			doc.set("base_" + f, val)
 
 	def initialize_taxes(self):
+		self.rate_includes_tax = False
+
 		for tax in self.doc.get("taxes"):
 			if not self.discount_amount_applied:
 				validate_taxes_and_charges(tax)
@@ -269,10 +273,10 @@ class calculate_taxes_and_totals:
 
 			self.doc.round_floats_in(tax)
 
-	def determine_exclusive_rate(self):
-		if not any(cint(tax.included_in_print_rate) for tax in self.doc.get("taxes")):
-			return
+			if (cint(tax.included_in_print_rate)):
+				self.rate_includes_tax = True
 
+	def determine_exclusive_rate(self):
 		for item in self.doc.items:
 			item_tax_map = self._load_item_tax_rate(item.item_tax_rate)
 			cumulated_tax_fraction = 0
@@ -299,10 +303,8 @@ class calculate_taxes_and_totals:
 				and item.qty
 				and (cumulated_tax_fraction or total_inclusive_tax_amount_per_qty)
 			):
-				amount = flt(item.amount) - total_inclusive_tax_amount_per_qty
-
-				item.net_amount = flt(amount / (1 + cumulated_tax_fraction), item.precision("net_amount"))
-				item.net_rate = flt(item.net_amount / item.qty, item.precision("net_rate"))
+				item.net_rate = item.rate / (1 + cumulated_tax_fraction)
+				item.net_amount = flt(item.amount / (1 + cumulated_tax_fraction), item.precision("net_amount"))
 				item.discount_percentage = flt(
 					item.discount_percentage, item.precision("discount_percentage")
 				)
@@ -503,7 +505,10 @@ class calculate_taxes_and_totals:
 				)
 
 		elif tax.charge_type == "On Net Total":
-			current_tax_amount = (tax_rate / 100.0) * item.net_amount
+			if (self.rate_includes_tax):
+				current_tax_amount = item.amount - item.net_amount
+			else:
+				current_tax_amount = flt(item.amount * (1 + tax_rate / 100.0), 2) - item.net_amount
 		elif tax.charge_type == "On Previous Row Amount":
 			current_tax_amount = (tax_rate / 100.0) * self.doc.get("taxes")[
 				cint(tax.row_id) - 1

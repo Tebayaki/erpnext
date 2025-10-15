@@ -144,13 +144,15 @@
    "label": "Amount",
    "oldfieldname": "tax_amount",
    "oldfieldtype": "Currency",
-   "options": "currency"
+   "options": "currency",
+   "precision": "2"
   },
   {
    "fieldname": "tax_amount_after_discount_amount",
    "fieldtype": "Currency",
    "label": "Tax Amount After Discount Amount",
    "options": "currency",
+   "precision": "2",
    "print_hide": 1,
    "read_only": 1
   },
@@ -163,6 +165,7 @@
    "oldfieldname": "total",
    "oldfieldtype": "Currency",
    "options": "currency",
+   "precision": "2",
    "read_only": 1
   },
   {
@@ -174,6 +177,7 @@
    "fieldtype": "Currency",
    "label": "Amount (Company Currency)",
    "options": "Company:company:default_currency",
+   "precision": "2",
    "print_hide": 1,
    "read_only": 1
   },
@@ -183,6 +187,7 @@
    "hidden": 1,
    "label": "Total (Company Currency)",
    "options": "Company:company:default_currency",
+   "precision": "2",
    "print_hide": 1
   },
   {
@@ -190,6 +195,7 @@
    "fieldtype": "Currency",
    "label": "Tax Amount After Discount Amount",
    "options": "Company:company:default_currency",
+   "precision": "2",
    "print_hide": 1,
    "read_only": 1
   },
@@ -247,14 +253,16 @@
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-15 13:14:48.936047",
+ "modified": "2025-10-15 10:29:05.067584",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Purchase Taxes and Charges",
  "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

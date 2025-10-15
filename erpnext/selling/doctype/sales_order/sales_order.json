@@ -853,6 +853,7 @@
    "collapsible": 1,
    "fieldname": "section_break_48",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "hide_days": 1,
    "hide_seconds": 1,
    "label": "Additional Discount"
@@ -1671,7 +1672,7 @@
  "idx": 105,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-07-28 12:14:29.760988",
+ "modified": "2025-10-15 11:08:50.868066",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order",

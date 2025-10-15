@@ -730,6 +730,7 @@
    "collapsible": 1,
    "fieldname": "discount_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Additional Discount"
   },
   {

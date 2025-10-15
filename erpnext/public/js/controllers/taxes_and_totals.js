@@ -101,7 +101,8 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 		this.validate_conversion_rate();
 		this.calculate_item_values();
 		this.initialize_taxes();
-		this.determine_exclusive_rate();
+		if (this.rate_includes_tax)
+			this.determine_exclusive_rate();
 		this.calculate_net_total();
 		this.calculate_taxes();
 		this.adjust_grand_total_for_inclusive_tax();
@@ -168,6 +169,7 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 
 	initialize_taxes() {
 		var me = this;
+		me.rate_includes_tax = false;
 
 		$.each(this.frm.doc["taxes"] || [], function(i, tax) {
 			if (!tax.dont_recompute_tax) {
@@ -189,6 +191,8 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 				erpnext.accounts.taxes.validate_inclusive_tax(tax, this.frm);
 			}
 			frappe.model.round_floats_in(tax);
+
+			if(cint(tax.included_in_print_rate)) me.rate_includes_tax = true;
 		});
 	}
 
@@ -222,12 +226,6 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 	determine_exclusive_rate() {
 		var me = this;
 
-		var has_inclusive_tax = false;
-		$.each(me.frm.doc["taxes"] || [], function(i, row) {
-			if(cint(row.included_in_print_rate)) has_inclusive_tax = true;
-		});
-		if(has_inclusive_tax==false) return;
-
 		$.each(this.frm.doc.items || [], function(n, item) {
 			var item_tax_map = me._load_item_tax_rate(item.item_tax_rate);
 			var cumulated_tax_fraction = 0.0;
@@ -251,8 +249,8 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 
 			if(!me.discount_amount_applied && item.qty && (total_inclusive_tax_amount_per_qty || cumulated_tax_fraction)) {
 				var amount = flt(item.amount) - total_inclusive_tax_amount_per_qty;
-				item.net_amount = flt(amount / (1 + cumulated_tax_fraction), precision("net_amount", item));
-				item.net_rate = item.qty ? flt(item.net_amount / item.qty, precision("net_rate", item)) : 0;
+				item.net_rate = item.rate / (1 + cumulated_tax_fraction)
+				item.net_amount = flt(item.amount / (1 + cumulated_tax_fraction), precision("net_amount", item))
 
 				me.set_in_company_currency(item, ["net_rate", "net_amount"]);
 			}
@@ -479,7 +477,11 @@ erpnext.taxes_and_totals = class TaxesAndTotals extends erpnext.payments {
 				((item.net_amount / this.frm.doc.net_total) * actual) : 0.0;
 
 		} else if(tax.charge_type == "On Net Total") {
-			current_tax_amount = (tax_rate / 100.0) * item.net_amount;
+			if (this.rate_includes_tax) {
+				current_tax_amount = item.amount - item.net_amount;
+			} else {
+				current_tax_amount = flt(item.amount * (1 + tax_rate / 100.0), 2) - item.net_amount
+			}
 		} else if(tax.charge_type == "On Previous Row Amount") {
 			current_tax_amount = (tax_rate / 100.0) *
 				this.frm.doc["taxes"][cint(tax.row_id) - 1].tax_amount_for_current_item;

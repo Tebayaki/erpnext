@@ -343,6 +343,7 @@
    "oldfieldname": "export_amount",
    "oldfieldtype": "Currency",
    "options": "currency",
+   "precision": "2",
    "read_only": 1,
    "reqd": 1
   },
@@ -368,6 +369,7 @@
    "oldfieldname": "amount",
    "oldfieldtype": "Currency",
    "options": "Company:company:default_currency",
+   "precision": "2",
    "print_hide": 1,
    "read_only": 1,
    "reqd": 1
@@ -405,6 +407,7 @@
    "fieldtype": "Currency",
    "label": "Net Amount",
    "options": "currency",
+   "precision": "2",
    "print_hide": 1,
    "read_only": 1
   },
@@ -425,6 +428,7 @@
    "fieldtype": "Currency",
    "label": "Net Amount (Company Currency)",
    "options": "Company:company:default_currency",
+   "precision": "2",
    "print_hide": 1,
    "read_only": 1
   },
@@ -983,13 +987,14 @@
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-12 16:33:55.503777",
+ "modified": "2025-10-15 10:07:24.948647",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Sales Invoice Item",
  "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [],
+ "row_format": "Dynamic",
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": []
