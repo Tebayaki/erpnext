@@ -72,6 +72,8 @@ def get_data(filters):
 		if filters.get("age") <= d.age:
 			res.append(d)
 
+		d.status = _(d.status)
+
 	return res
 
 

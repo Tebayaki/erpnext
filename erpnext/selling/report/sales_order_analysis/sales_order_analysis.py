@@ -162,6 +162,8 @@ def prepare_data(data, so_elapsed_time, filters):
 			else 0
 		)
 
+		row["status"] = _(row["status"])
+
 		if filters.get("group_by_so"):
 			so_name = row["sales_order"]
 
