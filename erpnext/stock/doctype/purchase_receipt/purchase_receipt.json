@@ -738,6 +738,7 @@
    "collapsible": 1,
    "fieldname": "section_break_42",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Additional Discount"
   },
   {
