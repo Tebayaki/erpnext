@@ -45,6 +45,8 @@ def execute(filters=None):
 
 	res = get_result(filters, account_details)
 
+	translate_data(res)
+
 	return columns, res
 
 
@@ -149,6 +151,18 @@ def get_result(filters, account_details):
 	result = get_result_as_list(data, filters)
 
 	return result
+
+def translate_data(data):
+	fields_to_translate = [
+		"voucher_type",
+		"voucher_subtype",
+		"against_voucher_type",
+	]
+	for row in data:
+		for field in fields_to_translate:
+			v = row.get(field)
+			if type(v) == str:
+				row[field] = _(v)
 
 
 def get_gl_entries(filters, accounting_dimensions):
