@@ -68,7 +68,7 @@ def get_item_list(wo_list, filters):
 				row = frappe._dict(
 					{
 						"work_order": wo_details.name,
-						"status": wo_details.status,
+						"status": _(wo_details.status),
 						"req_items": cint(count),
 						"instock": stock_qty,
 						"description": desc,
@@ -77,7 +77,7 @@ def get_item_list(wo_list, filters):
 						"bom_no": wo_details.bom_no,
 						"qty": wo_details.qty,
 						"buildable_qty": buildable_qty,
-						"ready_to_build": build,
+						"ready_to_build": _(build, context="Yes or No"),
 					}
 				)
 
