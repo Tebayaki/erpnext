@@ -770,7 +770,7 @@ erpnext.selling.SalesOrderController = class SalesOrderController extends erpnex
 
 					if (frappe.model.can_create("Payment Entry")) {
 						this.frm.add_custom_button(
-							__("Payment"),
+							__("Payment Entry"),
 							() => this.make_payment_entry(),
 							__("Create")
 						);
