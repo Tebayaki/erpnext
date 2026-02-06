@@ -493,7 +493,7 @@ class BOM(WebsiteGenerator):
 							)
 						else:
 							frappe.msgprint(
-								_("{0} not found for item {1}").format(self.rm_cost_as_per, arg["item_code"]),
+								_("{0} not found for item {1}").format(_(self.rm_cost_as_per), arg["item_code"]),
 								alert=True,
 							)
 		return flt(rate) * flt(self.plc_conversion_rate or 1) / (self.conversion_rate or 1)
